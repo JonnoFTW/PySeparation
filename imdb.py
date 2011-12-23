@@ -2,7 +2,7 @@ from BeautifulSoup import BeautifulSoup
 from urllib2 import urlopen
 class Actor:
     def __init__(self,id):
-        print id
+        print "New actor with id: "+id
         self.page = BeautifulSoup(urlopen("http://www.imdb.com/name/"+id+"/filmoyear"))       
         self.name = self.page.title.text[:-22]       
         self.id =  id
@@ -16,6 +16,7 @@ class Actor:
 
 class Film:
     def __init__(self,id):
+        print "New film with id: "+id
         page = BeautifulSoup(urlopen("http://www.imdb.com/title/"+id+"/fullcredits"))
         self.title = page.find("div",{"id":"tn15title"}).a.text
         self.id = id
@@ -40,6 +41,7 @@ class Films:
         try:
             return self.films[id]
         except KeyError:
+            self.films[id] = None
             fi = Film(id)
             self.films[id] = fi
             return fi
@@ -55,6 +57,7 @@ class Actors:
         try:
             return self.actors[id]
         except KeyError:
+            self.actors[id] = None
             ac = Actor(id)
             self.actors[id] = ac
             return ac
@@ -65,7 +68,7 @@ class IMDB:
         self.films = Films()
         self.actors = Actors()
     def addActor(self,id):
-        self.actors.at(Actor(id))
+        self.actors.at(id)
 
     def separation(self,a1,a2):
         count = 0
